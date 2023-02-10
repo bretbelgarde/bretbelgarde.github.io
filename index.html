@@ -8,9 +8,36 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=raleway:400,400i,600,600i,800,800i|roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet" />
+    <style>[x-cloak] {display: none !important;}/* x-cloak directive css for AlpineJS */</style>
     <script src="https://kit.fontawesome.com/41d1b2c95d.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        'use strict';
+
+        function appInit() {
+            return {
+                panels: {
+                    about_panel: false,
+                    skills_panel: false,
+                    employ_panel: true
+                },
+                togglePanel(e) {
+                    let $clickTarget = e.target.getAttribute('click-target');
+                    if (this.panels[$clickTarget]) return;
+
+                    for (const panel in this.panels) {
+                        if (this.panels[panel]) {
+                            this.panels[panel] = false;
+                        }
+                    }
+
+                    this.panels[$clickTarget] = true;
+                }
+            }
+        }
+    </script>
 </head>
-<body class="font-body">
+<body class="font-body" x-data="appInit()" >
     <div class="grid grid-cols-4">
         <div class=" p-4 bg-slate-600 text-white h-screen">
             <div class="w-[166px] my-4 mx-auto relative">
@@ -29,9 +56,12 @@
                         <ul>
                             <li><h3 class="text-xl font-extrabold font-header py-3">About Me</h3>
                                 <ul>
-                                    <li><a href="#" class="block w-full p-2 hover:bg-white hover:text-slate-700">About</a></li>
-                                    <li><a href="#" class="block w-full p-2 hover:bg-white hover:text-slate-700">Skills</a></li>
-                                    <li><a href="#" class="block w-full p-2 hover:bg-white hover:text-slate-700">Employment</a></li>
+                                    <li><a @click="togglePanel" :class="panels.about_panel ? 'bg-slate-400' : ''" 
+                                        click-target="about_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">About</a></li>
+                                    <li><a @click="togglePanel" :class="panels.skills_panel ? 'bg-slate-400' : ''" 
+                                        click-target="skills_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Skills</a></li>
+                                    <li><a @click="togglePanel" :class="panels.employ_panel ? 'bg-slate-400' : ''" 
+                                        click-target="employ_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Employment</a></li>
                                 </ul>
                             </li>
                             <!-- <li><h3 class="text-xl font-bold">Projects</h3>
@@ -54,94 +84,110 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-3 p-4 container w-full">
-            <article>
-                <section>
-                    <h2>About</h2>
-                    <p>As a skilled web developer with a wealth of experience in crafting visually-appealing and highly-functional eCommerce
-                    and business websites for small and medium-sized businesses, I am confident in my ability to help you achieve your
-                    online goals, whether it be to attract more clients or to successfully run an online store. I have a solid background in
-                    utilizing various web technologies such as PHP, WordPress, WooCommerce, CSS, HTML, and JavaScript to build dynamic and
-                    responsive websites.</p>
+        <div class="col-span-3 p-4 w-full relative">
+            <article class="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center">
+                <section x-show="panels.about_panel" x-transition:enter.duration.200ms 
+                    class="w-1/2 mx-auto">
+                    <h2 class="text-center font-header text-4xl mt-4 mb-6 w-full border-b-2 border-slate-700 leading-[0.2em]  text-slate-700">
+                        <span class="bg-white px-3"> About Me</span>
+                    </h2>
+                    <p class="text-xl p-2 text-slate-700">
+                        As a skilled web developer with a wealth of experience in crafting visually-appealing and highly-functional eCommerce
+                        and business websites for small and medium-sized businesses, I am confident in my ability to help you achieve your
+                        online goals, whether it be to attract more clients or to successfully run an online store. I have a extensive background 
+                        in utilizing various web technologies such as PHP, WordPress, WooCommerce, CSS, HTML, and JavaScript to build dynamic and
+                        responsive websites.
+                    </p>
                 </section>
-                <section>
-                    <h2>Skills</h2>
-                    <div>
-                        <h3>Developer Skills</h3>
-                        <ul>
-                            <li>PHP Development</li>
-                            <li>JavaScript</li>
-                            <li>HTML 5/XHTML</li>
-                            <li>CSS/SASS</li>
-                            <li>SQL</li>
-                            <li>Fat-Free Framework (PHP)</li>
-                            <li>WordPress &amp; WooCommerce</li>
-                            <li>WordPress Plugin Development</li>
-                            <li>WordPress Theme Development</li>
-                            <li>CSS Frameworks: Bootstrap, Tailwind CSS, Bulma</li>
-                            <li>jQuery</li>
-                            <li>Git</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>Other Skills</h3>
-                        <ul>
-                            <li>Linux</li>
-                            <li>MySQL Server</li>
-                            <li>Apache Server</li>
-                            <li>Domain Management</li>
-                            <li>Adobe Photoshop</li>
-                            <li>MS Office/Google Docs</li>
-                            <li>Responsive Design</li>
-                            <li>SEO</li>
-                        </ul>
-                    </div>
-                </section>
-                <section>
-                    <div>
-                        <h2>Employment</h2>
-                        <div>
+            </article>
+            <article class="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center">
+                <section x-show="panels.skills_panel" x-transition class="w-1/2 mx-auto">
+                    <h2 class="text-center font-header text-4xl mt-4 mb-6 w-full border-b-2 border-slate-700 leading-[0.2em]  text-slate-700">
+                        <span class="bg-white px-3">Skills</span>
+                    </h2>
+                    <div class="grid grid-cols-2 w-full">
+                        <div class="px-4 flex justify-center flex-row">
                             <div>
-                                <h3>ADS Phoenix</h3>
-                            </div>
-                            <div>
-                                <h3>Web Developer</h3>
-                            </div>
-                            <div>
-                                <h4>Duties</h4>
-                                <ul>
-                                    <li>Develop, update, and maintain PHP Web Applications.</li>
-                                    <li>Develop, update, and maintain WordPress CMS-based websites.</li>
-                                    <li>Deploy software and updates to live LAMP server.</li>
-                                    <li>Convert Adobe Photoshop design templates convert to HTML code.</li>
-                                    <li>Communicate job requirements and manage client expectations.</li>
-                                    <li>Accurately estimate time and manage client expectations to ensure timely completion.</li>
-                                    <li>Provide technical support and customer assistance to website users.</li>
-                                    <li>Manage and accurately maintain the company's digital assets (Servers, Domains, Software.)</li>
+                                <h3 class="text-slate-700 font-bold text-xl pb-2">Developer Skills</h3>
+                                <ul class="text-slate-700">
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">PHP Development</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">JavaScript</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">jQuery</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">HTML 5/XHTML</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">CSS/SASS</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">SQL</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Fat-Free Framework (PHP)</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">WordPress &amp; WooCommerce</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">WP Plugin Development</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">WP Theme Development</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Bootstrap, Tailwind CSS, Bulma</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Git</li>
                                 </ul>
                             </div>
                         </div>
+                        <div class="px-4 flex justify-center flex-row">
+                            <div>
+                                <h3 class="text-slate-700 font-bold text-xl pb-2 w-full">Other Skills</h3>
+                                <ul class="text-slate-700">
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Linux</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">MySQL Server</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Apache Server</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Domain Management</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Adobe Photoshop</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">MS Office/Google Docs</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Responsive Design</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">SEO</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">HTML Email Layout</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article>
+            <article class="absolute top-0 left-0 bottom-0 right-0 flex justify-center overflow-y-auto">
+                <section x-show="panels.employ_panel" x-transition class="w-1/24 mx-auto">
+                    <div class="my-4 py-4">
+                        <h2 class="text-center font-header text-4xl mt-4 mb-8 w-full border-b-2 border-slate-700 leading-[0.2em]  text-slate-700">
+                            <span class="bg-white px-3">Employment</span>
+                        </h2>
                         <div>
-                            <div>
-                                <h3>Eden Crest Vacation Rentals</h3>
+                            <div class="grid grid-cols-2 border-b-2 border-slate-300 mb-4">
+                                <h3 class="text-slate-700 font-bold text-xl my-2">ADS Phoenix</h3>
+                                <h3 class="text-slate-700 font-bold text-xl text-right my-2">Web Developer</h3>
                             </div>
                             <div>
-                                <div>Webmaster</div>
+                                <h4 class="text-slate-700 font-bold text-lg">Duties</h4>
+                                <ul class="text-slate-700">
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Develop, update, and maintain PHP Web Applications.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Develop, update, and maintain WordPress CMS-based websites.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Deploy software and updates to live LAMP server.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Convert Adobe Photoshop design templates convert to HTML code.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Communicate job requirements and manage client expectations.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Accurately estimate time and manage client expectations to ensure timely completion.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Provide technical support and customer assistance to website users.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Manage and accurately maintain the company's digital assets (Servers, Domains, Software.)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="my-4 py-6">
+                            <div class="grid grid-cols-2 border-b-2 border-slate-300 mb-4">
+                                <h3 class="text-slate-700 font-bold text-xl">Eden Crest Vacation Rentals</h3>
+                                <h3 class="text-slate-700 font-bold text-xl text-right">Webmaster</h3>
                             </div>
                             <div>
-                                <h4>Duties</h4>
-                                <ul>
-                                    <li>Develop, update, and maintain PHP MVC (Codeigniter framework) Website.</li>
-                                    <li>Develop, update, and maintain Wordpress CMS-based websites.</li>
-                                    <li>Develop, update, and maintain internal web applications using PHP and JavaScript.</li>
-                                    <li>Install and maintain LAMP-based development server.</li>
-                                    <li>Deploy software and updates to live LAMP server</li>
-                                    <li>Convert Adobe Photoshop design templates convert to HTML code.</li>
-                                    <li>Design and code templates for HTML-encoded E-Mail.</li>
-                                    <li>Design ad graphics for web and print mediums.</li>
-                                    <li>Photo manipulation and Graphic editing.</li>
-                                    <li>Assist with network problems as needed.</li>
-                                    <li>Assist with SEO and Marketing as needed.</li>
+                                <h4 class="text-slate-700 font-bold text-lg">Duties</h4>
+                                <ul class="text-slate-700">
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Develop, update, and maintain PHP MVC (Codeigniter framework) Website.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Develop, update, and maintain Wordpress CMS-based websites.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Develop, update, and maintain internal web applications using PHP and JavaScript.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Install and maintain LAMP-based development server.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Deploy software and updates to live LAMP server</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Convert Adobe Photoshop design templates convert to HTML code.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Design and code templates for HTML-encoded E-Mail.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Design ad graphics for web and print mediums.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Photo manipulation and Graphic editing.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Assist with network problems as needed.</li>
+                                    <li class="px-2 py-1 bg-white even:bg-slate-300">Assist with SEO and Marketing as needed.</li>
                                 </ul>
                             </div>
                         </div>
