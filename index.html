@@ -14,30 +14,108 @@
     <script>
         'use strict';
 
+        const urlParams = new URLSearchParams(window.location.search);
+
         function appInit() {
             return {
                 panels: {
                     about_panel: true,
                     skills_panel: false,
-                    employ_panel: false
+                    employ_panel: false,
+                    portfolio_panel: false
                 },
+                portfolio_data: [
+                    {
+                        name: "ADS Phoenix",
+                        img: "/img/ads.png",
+                        link: "https://adsphoenix.com",
+                        tech: "WordPress"
+                    },
+                    {
+                        name: "F & S Web Store",
+                        img: "/img/fns.png",
+                        link: "https://store.drivefs.com/",
+                        tech: "WordPress/WooCommerce"
+                    },
+                    {
+                        name: "RTG Employee Store",
+                        img: "/img/rtg.png",
+                        link: "https://shop.realtytrustgroup.com/",
+                        tech: "WordPress/WooCommerce"
+                    },
+                    {
+                        name: "Clayton Homes Factory Direct",
+                        img: "/img/chfd.png",
+                        link: "https://www.claytonhomesfactorydirect.com/",
+                        tech: "WordPress"
+                    },
+                    {
+                        name: "KDP Employee Store",
+                        img: "/img/kdp.png",
+                        link: "http://kdp.adsphx.com/",
+                        tech: "WordPress/WooCommerce"
+                    },
+                    {
+                        name: "Summit Homes Apparel",
+                        img: "/img/sh.png",
+                        link: "https://apparel.summithomesshop.com/",
+                        tech: "WordPress/WooCommerce"
+                    },
+                    {
+                        name: "Acts Outreach Ministries",
+                        img: "/img/aom.png",
+                        link: "https://actsoutreachministries.org/",
+                        tech: "WordPress"
+                    },
+                    {
+                        name: "The Franklin",
+                        img: "/img/frank.png",
+                        link: "https://claytonbuiltfranklin.com/",
+                        tech: "PHP/HTML/JavaScript"
+                    },
+                    {
+                        name: "Clayton Waco I",
+                        img: "/img/cwi.png",
+                        link: "https://claytonwaco1.com/",
+                        tech: "PHP/HTML/JavaScript"
+                    },
+                    {
+                        name: "Clayton Rutledge",
+                        img: "/img/cr.png",
+                        link: "https://claytonrutledge.com/",
+                        tech: "PHP/HTML/JavaScript"
+                    }
+                ],
                 togglePanel(e) {
                     let $clickTarget = e.target.getAttribute('click-target');
                     if (this.panels[$clickTarget]) return;
 
-                    for (const panel in this.panels) {
-                        if (this.panels[panel]) {
-                            this.panels[panel] = false;
-                        }
-                    }
+                    this.processPanel($clickTarget);
+                },
+                linkToPanel(panelSelected) {
+                    if (panelSelected == null) return;
 
-                    this.panels[$clickTarget] = true;
+                    this.processPanel(panelSelected);
+
+                },
+                processPanel(selectedPanel) {
+                    console.log(selectedPanel);
+                    if (this.panels.hasOwnProperty(selectedPanel)) {
+                        for (const panel in this.panels) {
+                            if (this.panels[panel]) {
+                                this.panels[panel] = false;
+                            }
+                        }
+
+                        this.panels[selectedPanel] = true;
+                    } 
                 }
+
             }
         }
     </script>
 </head>
-<body class="font-body" x-data="appInit()" >
+<body class="font-body" x-data="appInit();" x-init="processPanel(urlParams.get('panel'));">
     <div class="grid grid-cols-4">
         <div class=" p-4 bg-slate-600 text-white h-screen">
             <div class="w-[166px] my-4 mx-auto relative">
@@ -56,12 +134,22 @@
                         <ul>
                             <li><h3 class="text-xl font-extrabold font-header py-3">About Me</h3>
                                 <ul>
-                                    <li><a @click="togglePanel" :class="panels.about_panel ? 'bg-slate-400' : ''" 
-                                        click-target="about_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">About</a></li>
-                                    <li><a @click="togglePanel" :class="panels.skills_panel ? 'bg-slate-400' : ''" 
-                                        click-target="skills_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Skills</a></li>
-                                    <li><a @click="togglePanel" :class="panels.employ_panel ? 'bg-slate-400' : ''" 
-                                        click-target="employ_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Employment</a></li>
+                                    <li>
+                                        <a @click="togglePanel" :class="panels.about_panel ? 'bg-slate-400' : ''" 
+                                        click-target="about_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">About</a>
+                                    </li>
+                                    <li>
+                                        <a @click="togglePanel" :class="panels.skills_panel ? 'bg-slate-400' : ''" 
+                                        click-target="skills_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Skills</a>
+                                    </li>
+                                    <li>
+                                        <a @click="togglePanel" :class="panels.employ_panel ? 'bg-slate-400' : ''" 
+                                        click-target="employ_panel" class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Employment</a>
+                                    </li>
+                                    <li>
+                                        <a @click="togglePanel" :class="panels.portfolio_panel ? 'bg-slate-400' : ''" click-target="portfolio_panel"
+                                            class="block w-full p-2 hover:bg-white hover:text-slate-700 cursor-pointer transition ease-in-out">Portfolio</a>
+                                    </li>
                                 </ul>
                             </li>
                             <!-- <li><h3 class="text-xl font-bold">Projects</h3>
@@ -190,6 +278,34 @@
                                     <li class="px-2 py-1 bg-white even:bg-slate-300">Assist with SEO and Marketing as needed.</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </section>
+            </article>
+            <article class="absolute top-0 left-0 bottom-0 right-0 flex justify-center overflow-y-auto">
+                <section x-show="panels.portfolio_panel" x-transition class="w-3/4 mx-auto">
+                    <div class="my-4 py-4">
+                        <h2
+                            class="text-center font-header text-4xl mt-4 mb-6 w-full border-b-2 border-slate-700 leading-[0.2em]  text-slate-700">
+                            <span class="bg-white px-3">Portfolio</span>
+                        </h2>
+                        <div class="grid grid-cols-3 gap-8 py-6 w-full">
+                        <template x-for="portfolio in portfolio_data">
+                            <div class="bg-slate-500 shadow-xl border border-slate-300 hover:scale-110 transition ease-in-out">
+                                <div>
+                                    <h4 class="p-3 font-header text-xl text-center text-white font-bold">
+                                        <a x-bind:href="portfolio.link" x-text="portfolio.name" class="block"></a>
+                                    </h4>
+                                    <a x-bind:href="portfolio.link"><img x-bind:src="portfolio.img" alt="Website Screenshot | ADS Phoenix" class="w-full block"></a>
+                                    <div class="text-white bg-slate-400 border-t-2 border-t-slate-500">
+                                        <a x-bind:href="portfolio.link" class="block h-full w-full p-3">
+                                            <p class="font-bold text-lg">Tech:</p>
+                                            <p x-text="portfolio.tech"></p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                         </div>
                     </div>
                 </section>
