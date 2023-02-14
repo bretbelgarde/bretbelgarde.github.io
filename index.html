@@ -294,11 +294,13 @@
                             <div class="bg-slate-500 shadow-xl border border-slate-300 hover:scale-110 transition ease-in-out">
                                 <div>
                                     <h4 class="p-3 font-header text-xl text-center text-white font-bold">
-                                        <a x-bind:href="portfolio.link" x-text="portfolio.name" class="block"></a>
+                                        <a x-bind:href="portfolio.link" x-text="portfolio.name" class="block" target="_blank"></a>
                                     </h4>
-                                    <a x-bind:href="portfolio.link"><img x-bind:src="portfolio.img" alt="Website Screenshot | ADS Phoenix" class="w-full block"></a>
+                                    <a x-bind:href="portfolio.link" target="_blank">
+                                        <img x-bind:src="portfolio.img" x-bind:alt="'Website Screenshot | ' + portfolio.name" class="w-full block">
+                                    </a>
                                     <div class="text-white bg-slate-400 border-t-2 border-t-slate-500">
-                                        <a x-bind:href="portfolio.link" class="block h-full w-full p-3">
+                                        <a x-bind:href="portfolio.link" class="block h-full w-full p-3" target="_blank">
                                             <p class="font-bold text-lg">Tech:</p>
                                             <p x-text="portfolio.tech"></p>
                                         </a>
